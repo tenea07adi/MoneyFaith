@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Abstractions/Abstractions.csproj" />
+  <Project Path="ConsoleApp/ConsoleApp.csproj" />
+  <Project Path="ConsoleTools/ConsoleTools.csproj" />
+  <Project Path="CoreCalculator/CoreCalculator.csproj" />
+</Solution>
