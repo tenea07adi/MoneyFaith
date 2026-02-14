@@ -89,6 +89,7 @@ namespace ConsoleApp
         private void InitCalculations()
         {
             _calculations.Add("Simple stock calculation", new SimpleStockCalculation());
+            _calculations.Add("Simple bond calculation", new SimpleBondCalculation());
         }
 
         private void WriteInitMessage()

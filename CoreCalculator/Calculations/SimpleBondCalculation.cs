@@ -1,0 +1,52 @@
+﻿using Abstractions.Calculator;
+using Abstractions.DTOs;
+
+namespace CoreCalculator.Calculations
+{
+    public class SimpleBondCalculation : ICalculation
+    {
+        public CalculationResultDTO Calculate(CalculationConfigDTO config)
+        {
+            decimal total = config.InitialValue;
+            decimal profit = 0;
+            var monthsValues = new List<CalculationMonthlyResultDTO>();
+
+            decimal interestDecimal = config.AnnualInterest / 100m;
+
+            var years = config.DurationInMonths / 12;
+            var remainingMonths = config.DurationInMonths % 12;
+
+            for (int i = 1; i <= years; i++)
+            {
+                profit += total * interestDecimal;
+
+                monthsValues.Add(new CalculationMonthlyResultDTO()
+                {
+                    Month = i * 12,
+                    Value = Math.Round(total+ profit, 2)
+                });
+            }
+
+            if (remainingMonths > 0)
+            {
+                profit += total * interestDecimal / 12 * remainingMonths;
+
+                monthsValues.Add(new CalculationMonthlyResultDTO()
+                {
+                    Month = years * 12 + remainingMonths,
+                    Value = Math.Round(total, 2)
+                });
+            }
+
+            profit = Math.Round(profit, 2);
+
+            return new CalculationResultDTO
+            {
+                FinalValue = Math.Round(total+ profit, 2),
+                FinalProfit = profit,
+                MonthlyResults = monthsValues
+            };
+        }
+    }
+}
+
