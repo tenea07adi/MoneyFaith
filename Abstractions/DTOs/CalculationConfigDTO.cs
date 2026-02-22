@@ -13,7 +13,7 @@
         public decimal AnnualInterest { get; set; }
 
         /// <summary>
-        /// Tthe amount of money taken into account at the beginning of the calculation period
+        /// The amount of money taken into account at the beginning of the calculation period
         /// </summary>
         public decimal InitialValue { get; set; }
     }

@@ -1,6 +1,6 @@
 ﻿using Abstractions.Calculator;
 using Abstractions.Console;
-using Abstractions.DTOs;
+using ConsoleApp.CalculationInteractionsStrategy;
 using ConsoleApp.Constants;
 using CoreCalculator.Calculations;
 
@@ -10,18 +10,17 @@ namespace ConsoleApp
     {
         private IPrettyConsole _prettyConsole;
 
-        private Dictionary<string, ICalculation> _calculations= new Dictionary<string, ICalculation>();
+        private Dictionary<string, ICalculation> _calculations= 
+            new Dictionary<string, ICalculation>();
+
+        private Dictionary<Type, ICalculationConsoleStrategy> _calculationsStrategy = 
+            new Dictionary<Type, ICalculationConsoleStrategy>();
 
         public LifecycleConsole(IPrettyConsole prettyConsole)
         {
             _prettyConsole = prettyConsole;
 
             InitCalculations();
-        }
-
-        public void Restart()
-        {
-            throw new NotImplementedException();
         }
 
         public void Run()
@@ -33,36 +32,15 @@ namespace ConsoleApp
                 _prettyConsole.NextLine();
 
                 ICalculation currentCalculation = AskForCalculation();
+                ICalculationConsoleStrategy currentStrategy = GetCalculationStrategy(currentCalculation);
 
-                var calcConig = new CalculationConfigDTO();
+                var calcConfig = currentStrategy.ReadCalculationConfig();
 
-                calcConig.DurationInMonths = _prettyConsole.ReadData<int>("Duration in months:");
-                calcConig.AnnualInterest = _prettyConsole.ReadData<decimal>("Anual interest in procents:");
-                calcConig.InitialValue = _prettyConsole.ReadData<decimal>("Initial investment:");
-
-                var result = currentCalculation.Calculate(calcConig);
+                var result = currentCalculation.Calculate(calcConfig);
 
                 _prettyConsole.NextLine();
-                
-                _prettyConsole.WriteAsPannel(
-                    [
-                        $"Calculation: {GetCalculationName(currentCalculation)}",
-                        $"Duration in months: {calcConig.DurationInMonths.ToString()}",
-                        $"Anual interest in procents: {calcConig.AnnualInterest.ToString()}",
-                        $"Initial investment: {calcConig.InitialValue.ToString()}"
-                    ],
-                    "Calculation config",
-                    PrettyColorsEnum.Title);
 
-                _prettyConsole.WriteAsPannel(
-                    [
-                        $"Final amount: {result.FinalValue.ToString()}",
-                        $"Final profit: {result.FinalProfit.ToString()}"
-                    ],
-                    "General results",
-                    PrettyColorsEnum.Title);
-
-                _prettyConsole.WriteTable(result.MonthlyResults, PrettyColorsEnum.Title);
+                currentStrategy.DisplayCalculationResult(GetCalculationName(currentCalculation), calcConfig, result);
 
                 var doNewCalc = _prettyConsole.AskData<string>("Do you want one more calculation?", ["Yes", "No"]);
 
@@ -81,15 +59,15 @@ namespace ConsoleApp
             }
         }
 
-        public void Shutdown()
-        {
-            throw new NotImplementedException();
-        }
-
         private void InitCalculations()
         {
             _calculations.Add("Simple stock calculation", new SimpleStockCalculation());
             _calculations.Add("Simple bond calculation", new SimpleBondCalculation());
+            _calculations.Add("Stock calculation", new StockCalculation());
+
+            _calculationsStrategy.Add(typeof(SimpleStockCalculation), new SimpleCalculationInteractionsStrategy(_prettyConsole));
+            _calculationsStrategy.Add(typeof(SimpleBondCalculation), new SimpleCalculationInteractionsStrategy(_prettyConsole));
+            _calculationsStrategy.Add(typeof(StockCalculation), new StockCalculationInteractionsStrategy(_prettyConsole));
         }
 
         private void WriteInitMessage()
@@ -107,6 +85,11 @@ namespace ConsoleApp
             var selectedCalculation = _prettyConsole.SelectData("Select calculation:", calculations, PrettyColorsEnum.SimpleText, PrettyColorsEnum.Title);
 
             return _calculations[selectedCalculation];
+        }
+
+        private ICalculationConsoleStrategy GetCalculationStrategy(ICalculation calculation)
+        {
+            return _calculationsStrategy[calculation.GetType()];
         }
 
         private string GetCalculationName(ICalculation calculation)

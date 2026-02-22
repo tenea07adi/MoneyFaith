@@ -1,11 +1,10 @@
-﻿using Abstractions.Calculator;
-using Abstractions.DTOs;
+﻿using Abstractions.DTOs;
 
 namespace CoreCalculator.Calculations
 {
-    public class SimpleBondCalculation : ICalculation
+    public class SimpleBondCalculation : BaseCalculation<CalculationConfigDTO, CalculationResultDTO>
     {
-        public CalculationResultDTO Calculate(CalculationConfigDTO config)
+        protected override CalculationResultDTO CalculateSpecific(CalculationConfigDTO config)
         {
             decimal total = config.InitialValue;
             decimal profit = 0;

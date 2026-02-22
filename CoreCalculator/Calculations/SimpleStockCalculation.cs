@@ -1,11 +1,10 @@
-﻿using Abstractions.Calculator;
-using Abstractions.DTOs;
+﻿using Abstractions.DTOs;
 
 namespace CoreCalculator.Calculations
 {
-    public class SimpleStockCalculation : ICalculation
+    public class SimpleStockCalculation : BaseCalculation<CalculationConfigDTO, CalculationResultDTO>
     {
-        public CalculationResultDTO Calculate(CalculationConfigDTO config)
+        protected override CalculationResultDTO CalculateSpecific(CalculationConfigDTO config)
         {
             decimal total = config.InitialValue;
             decimal profit = 0;
@@ -27,7 +26,7 @@ namespace CoreCalculator.Calculations
                 });
             }
 
-            if(remainingMonths > 0)
+            if (remainingMonths > 0)
             {
                 total += total * interestDecimal / 12 * remainingMonths;
 
