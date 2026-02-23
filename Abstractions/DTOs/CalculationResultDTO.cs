@@ -4,6 +4,8 @@
     {
         public List<CalculationMonthlyResultDTO> MonthlyResults { get; set; } = new List<CalculationMonthlyResultDTO>();
         public decimal FinalValue;
+        public decimal TotalInvestedValue;
         public decimal FinalProfit;
+        public decimal ProcentualFinalProfit;
     }
 }

@@ -33,11 +33,11 @@ namespace ConsoleApp.CalculationInteractionsStrategy
             _prettyConsole.WriteAsPannel(
                 [
                     $"Calculation: {calculationName}",
-                        $"Duration in months: {config.DurationInMonths.ToString()}",
-                        $"Anual interest in procents: {config.AnnualInterest.ToString()}",
-                        $"Initial investment: {config.InitialValue.ToString()}",
-                        $"Recursive investment: {config.RecursiveInvestment.ToString()}",
-                        $"Recursive investment frequency in months: {config.RecursiveInvestmentFrequencyInMonths.ToString()}",
+                    $"Duration in months: {config.DurationInMonths.ToString()}",
+                    $"Anual interest in procents: {config.AnnualInterest.ToString()}",
+                    $"Initial investment: {config.InitialValue.ToString()}",
+                    $"Recursive investment: {config.RecursiveInvestment.ToString()}",
+                    $"Recursive investment frequency in months: {config.RecursiveInvestmentFrequencyInMonths.ToString()}"
                 ],
                 "Calculation config",
                 PrettyColorsEnum.Title);
@@ -45,7 +45,9 @@ namespace ConsoleApp.CalculationInteractionsStrategy
             _prettyConsole.WriteAsPannel(
                 [
                     $"Final amount: {result.FinalValue.ToString()}",
-                        $"Final profit: {result.FinalProfit.ToString()}"
+                    $"Total Invested: {result.TotalInvestedValue.ToString()}",
+                    $"Final profit: {result.FinalProfit.ToString()}",
+                    $"Procentual final profit: {result.ProcentualFinalProfit.ToString()}%",
                 ],
                 "General results",
                 PrettyColorsEnum.Title);

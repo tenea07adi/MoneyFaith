@@ -18,13 +18,13 @@ namespace CoreCalculator.Calculations
             {
                 total += total * interestDecimal / 12;
 
-                if (i % config.RecursiveInvestmentFrequencyInMonths == 0)
+                if (config.RecursiveInvestmentFrequencyInMonths != 0 && i % config.RecursiveInvestmentFrequencyInMonths == 0)
                 {
                     total += config.RecursiveInvestment;
                     totalInvested += config.RecursiveInvestment;
                 }
 
-                if (i % 12 == 0)
+                if (i % 12 == 0 || i == config.DurationInMonths)
                 {
                     monthsValues.Add(new CalculationMonthlyResultDTO()
                     {
@@ -40,6 +40,8 @@ namespace CoreCalculator.Calculations
             {
                 FinalValue = Math.Round(total, 2),
                 FinalProfit = profit,
+                TotalInvestedValue = Math.Round(totalInvested, 2),
+                ProcentualFinalProfit = Math.Round(profit / totalInvested * 100, 2),
                 MonthlyResults = monthsValues
             };
         }

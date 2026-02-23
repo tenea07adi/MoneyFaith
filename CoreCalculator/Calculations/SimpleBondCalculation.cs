@@ -43,6 +43,8 @@ namespace CoreCalculator.Calculations
             {
                 FinalValue = Math.Round(total+ profit, 2),
                 FinalProfit = profit,
+                TotalInvestedValue = Math.Round(config.InitialValue, 2),
+                ProcentualFinalProfit = Math.Round(profit / config.InitialValue * 100, 2),
                 MonthlyResults = monthsValues
             };
         }
