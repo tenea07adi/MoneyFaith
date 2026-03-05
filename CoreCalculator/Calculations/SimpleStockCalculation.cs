@@ -1,4 +1,5 @@
 ﻿using Abstractions.DTOs;
+using CoreCalculator.Constants;
 
 namespace CoreCalculator.Calculations
 {
@@ -12,8 +13,8 @@ namespace CoreCalculator.Calculations
 
             decimal interestDecimal = config.AnnualInterest / 100m;
 
-            var years = config.DurationInMonths / 12;
-            var remainingMonths = config.DurationInMonths % 12;
+            var years = config.DurationInMonths / CalculationConstants.YearMonths;
+            var remainingMonths = config.DurationInMonths % CalculationConstants.YearMonths;
 
             for (int i = 1; i <= years; i++)
             {
@@ -21,18 +22,18 @@ namespace CoreCalculator.Calculations
 
                 monthsValues.Add(new CalculationMonthlyResultDTO()
                 {
-                    Month = i * 12,
+                    Month = i * CalculationConstants.YearMonths,
                     Value = Math.Round(total, 2)
                 });
             }
 
             if (remainingMonths > 0)
             {
-                total += total * interestDecimal / 12 * remainingMonths;
+                total += total * interestDecimal / CalculationConstants.YearMonths * remainingMonths;
 
                 monthsValues.Add(new CalculationMonthlyResultDTO()
                 {
-                    Month = years * 12 + remainingMonths,
+                    Month = years * CalculationConstants.YearMonths + remainingMonths,
                     Value = Math.Round(total, 2)
                 });
             }

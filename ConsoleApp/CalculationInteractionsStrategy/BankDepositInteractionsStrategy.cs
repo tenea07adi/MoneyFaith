@@ -1,32 +1,30 @@
 ﻿using Abstractions.Console;
-using Abstractions.DTOs;
 using Abstractions.DTOs.SpecificCalculation;
 
 namespace ConsoleApp.CalculationInteractionsStrategy
 {
-    public class StockCalculationInteractionsStrategy : BaseCalculationConsoleStrategy<StockCalculationConfigDTO, CalculationResultDTO>
+    public class BankDepositInteractionsStrategy : BaseCalculationConsoleStrategy<BankDepositCalculationConfigDTO, BankDepositCalculationResultDTO>
     {
         private readonly IPrettyConsole _prettyConsole;
 
-        public StockCalculationInteractionsStrategy(IPrettyConsole prettyConsole)
+        public BankDepositInteractionsStrategy(IPrettyConsole prettyConsole)
         {
             _prettyConsole = prettyConsole;
         }
 
-        protected override StockCalculationConfigDTO ReadSpecificCalculationConfig()
+        protected override BankDepositCalculationConfigDTO ReadSpecificCalculationConfig()
         {
-            var calcConfig = new StockCalculationConfigDTO();
+            var calcConfig = new BankDepositCalculationConfigDTO();
 
             calcConfig.DurationInMonths = _prettyConsole.ReadData<int>("Duration in months:");
             calcConfig.AnnualInterest = _prettyConsole.ReadData<decimal>("Anual interest in procents:");
             calcConfig.InitialValue = _prettyConsole.ReadData<decimal>("Initial investment:");
-            calcConfig.RecursiveInvestment = _prettyConsole.ReadData<decimal>("Recursive investment:");
-            calcConfig.RecursiveInvestmentFrequencyInMonths = _prettyConsole.ReadData<int>("Recursive investment interval in months:");
+            calcConfig.TaxOnProfitRate = _prettyConsole.ReadData<decimal>("Tax on profit rate in procents:");
 
             return calcConfig;
         }
 
-        protected override void DisplaySpecificCalculationResult(string calculationName, StockCalculationConfigDTO config, CalculationResultDTO result)
+        protected override void DisplaySpecificCalculationResult(string calculationName, BankDepositCalculationConfigDTO config, BankDepositCalculationResultDTO result)
         {
             _prettyConsole.NextLine();
 
@@ -36,18 +34,18 @@ namespace ConsoleApp.CalculationInteractionsStrategy
                     $"Duration in months: {config.DurationInMonths.ToString()}",
                     $"Anual interest in procents: {config.AnnualInterest.ToString()}",
                     $"Initial investment: {config.InitialValue.ToString()}",
-                    $"Recursive investment: {config.RecursiveInvestment.ToString()}",
-                    $"Recursive investment frequency in months: {config.RecursiveInvestmentFrequencyInMonths.ToString()}"
+                    $"Tax on profit rate in procents: {config.TaxOnProfitRate.ToString()}",
                 ],
                 "Calculation config",
                 PrettyColorsEnum.Title);
 
             _prettyConsole.WriteAsPannel(
                 [
-                    $"Final amount: {result.FinalValue.ToString()}",
+                    $"Final amount (after tax): {result.FinalValue.ToString()}",
                     $"Total Invested: {result.TotalInvestedValue.ToString()}",
-                    $"Final profit: {result.FinalProfit.ToString()}",
-                    $"Procentual final profit: {result.ProcentualFinalProfit.ToString()}%",
+                    $"Final profit (after tax): {result.FinalProfit.ToString()}",
+                    $"Procentual final profit (after tax): {result.ProcentualFinalProfit.ToString()}%",
+                    $"Total tax on profit paid: {result.TotalTaxOnProfitPaid.ToString()}"
                 ],
                 "General results",
                 PrettyColorsEnum.Title);

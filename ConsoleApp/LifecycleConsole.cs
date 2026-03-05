@@ -64,10 +64,12 @@ namespace ConsoleApp
             _calculations.Add("Simple stock calculation", new SimpleStockCalculation());
             _calculations.Add("Simple bond calculation", new SimpleBondCalculation());
             _calculations.Add("Stock calculation", new StockCalculation());
+            _calculations.Add("Bank deposit", new BankDepositCalculation());
 
             _calculationsStrategy.Add(typeof(SimpleStockCalculation), new SimpleCalculationInteractionsStrategy(_prettyConsole));
             _calculationsStrategy.Add(typeof(SimpleBondCalculation), new SimpleCalculationInteractionsStrategy(_prettyConsole));
             _calculationsStrategy.Add(typeof(StockCalculation), new StockCalculationInteractionsStrategy(_prettyConsole));
+            _calculationsStrategy.Add(typeof(BankDepositCalculation), new BankDepositInteractionsStrategy(_prettyConsole));
         }
 
         private void WriteInitMessage()

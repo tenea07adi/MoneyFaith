@@ -5,6 +5,7 @@ MoneyFaith is a console application created for investment calculations. It is a
 - Simple bond | One initial investment without compounding
 - Simple stock | One initial investment with compounding
 - Stock | One initial investment followed by recursive investments with compounding
+- Bank deposit | One initial investment with daily compounding and taxes calculated
 
 ## Technologies
 - .NET 10

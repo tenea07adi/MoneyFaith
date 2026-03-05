@@ -1,5 +1,6 @@
 ﻿using Abstractions.DTOs;
 using Abstractions.DTOs.SpecificCalculation;
+using CoreCalculator.Constants;
 
 namespace CoreCalculator.Calculations
 {
@@ -16,7 +17,7 @@ namespace CoreCalculator.Calculations
 
             for (int i = 1; i <= config.DurationInMonths; i++)
             {
-                total += total * interestDecimal / 12;
+                total += total * interestDecimal / CalculationConstants.YearMonths;
 
                 if (config.RecursiveInvestmentFrequencyInMonths != 0 && i % config.RecursiveInvestmentFrequencyInMonths == 0)
                 {
@@ -24,7 +25,7 @@ namespace CoreCalculator.Calculations
                     totalInvested += config.RecursiveInvestment;
                 }
 
-                if (i % 12 == 0 || i == config.DurationInMonths)
+                if (i % CalculationConstants.YearMonths == 0 || i == config.DurationInMonths)
                 {
                     monthsValues.Add(new CalculationMonthlyResultDTO()
                     {
